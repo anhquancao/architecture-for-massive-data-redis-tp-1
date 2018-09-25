@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 public class Server {
     private ArticleService articleService;
-    BufferedReader in;
+    private BufferedReader in;
 
 
     private Server() {
@@ -30,6 +30,7 @@ public class Server {
             }
             switch (choice) {
                 case 1:
+                    articleService.showAllArticle();
                     break;
                 case 2:
                     articleService.createArticle();

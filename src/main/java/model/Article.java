@@ -43,4 +43,13 @@ public class Article {
     public void setTags(String tags) {
         this.tags = tags;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", body='" + body + '\'' +
+                ", tags='" + tags + '\'' +
+                '}';
+    }
 }

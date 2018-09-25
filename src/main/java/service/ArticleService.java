@@ -18,10 +18,12 @@ public class ArticleService {
 
     public void showAllArticle() {
         List<Article> articles = articleRepository.findAll();
-
+        for (Article article : articles) {
+            System.out.println(article);
+        }
     }
 
-    public void createArticle(){
+    public void createArticle() {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         try {
             System.out.println("Please input article body");
