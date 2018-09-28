@@ -46,7 +46,9 @@ public class ArticleService {
 
             // Save article into database
             Article article = new Article(body, tags);
-            articleRepository.save(article);
+            Long id = articleRepository.save(article);
+            article.setId(id);
+
             String[] tagList = tags.split(",");
 
             // publish the body of article to all keyword channel

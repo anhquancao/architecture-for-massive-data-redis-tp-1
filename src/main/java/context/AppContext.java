@@ -7,10 +7,6 @@ public class AppContext {
     private BufferedReader in;
     private static AppContext appContext;
 
-    private AppContext() {
-
-    }
-
     public static AppContext getAppContext() {
         if (appContext == null) {
             appContext = new AppContext();

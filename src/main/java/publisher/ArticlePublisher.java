@@ -12,7 +12,7 @@ public class ArticlePublisher implements ArticlePublisherInterface {
 
     public void publishArticle(String tag, Article article) {
         String channel = "channel:" + tag;
-        jedis.publish(channel, article.getBody());
+        jedis.publish(channel, String.valueOf(article.getId()));
         System.out.println("PUBLISH to " + channel);
     }
 }

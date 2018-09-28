@@ -54,4 +54,12 @@ public class ArticleRepository implements ArticleRepositoryInterface {
         }
         return articles;
     }
+
+    public Article findArticleById(Long id) {
+        String key = "article:" + id;
+        Map<String, String> values = jedis.hgetAll(key);
+        String body = values.get("body");
+        String tags = values.get("tags");
+        return new Article(id, body, tags);
+    }
 }
