@@ -38,8 +38,6 @@ public class Server {
                 case 3:
                     System.exit(1);
             }
-
-
         }
     }
 

@@ -1,84 +1,116 @@
 package client;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPubSub;
 
-import java.util.HashSet;
-import java.util.Set;
+import model.User;
+import repository.UserRepository;
+import repository.UserRepositoryInterface;
+import service.SubscriberService;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Client {
-    private static final String JEDIS_SERVER = ;
-    private Set<String> channels;
-    private Jedis jedis;
-    
+
+    private BufferedReader in;
+    private SubscriberService subscriberService;
+    private UserRepositoryInterface userRepository;
 
     private Client() {
-        jedis = new Jedis();
-        this.channels = new HashSet<String>();
+        in = new BufferedReader(new InputStreamReader(System.in));
+        subscriberService = new SubscriberService();
+        userRepository = new UserRepository();
     }
 
-    public void subscribe(String channel) {
-        channels.add(channel);
-    }
-
-    public void unsubscribe(String channel) {
-        channels.remove(channel);
-    }
-
-    private JedisPubSub setupSubscriber() {
-        final JedisPubSub jedisPubSub = new JedisPubSub() {
-            @Override
-            public void onUnsubscribe(String channel, int subscribedChannels) {
-                System.out.println("onUnsubscribe");
-            }
-
-            @Override
-            public void onSubscribe(String channel, int subscribedChannels) {
-                System.out.println("onSubscribe");
-            }
-
-            @Override
-            public void onPUnsubscribe(String pattern, int subscribedChannels) {
-            }
-
-            @Override
-            public void onPSubscribe(String pattern, int subscribedChannels) {
-            }
-
-            @Override
-            public void onPMessage(String pattern, String channel, String message) {
-            }
-
-            @Override
-            public void onMessage(String channel, String message) {
-                System.out.println(message);
-            }
-        };
-        new Thread(new Runnable() {
-
-            public void run() {
-                try {
-                    System.out.println("Connecting");
-                    Jedis jedis = new Jedis(JEDIS_SERVER);
-                    log("subscribing");
-                    jedis.subscribe(jedisPubSub, "test");
-                    log("subscribe returned, closing down");
-                    jedis.quit();
-                } catch (Exception e) {
-                    log(">>> OH NOES Sub - " + e.getMessage());
-                    // e.printStackTrace();
+    public void dashboard() {
+        while (true) {
+            int choice = 0;
+            System.out.print("1. Subscribe to channel\n2. Create a new article\n3. Exit\nPlease choose: ");
+            try {
+                choice = Integer.parseInt(in.readLine());
+                if (choice < 1 || choice > 4) {
+                    throw new IOException("Index out of range");
                 }
+            } catch (Exception e) {
+                System.out.println(">>> Please input 1 to 4");
             }
-        }, "subscriberThread").start();
-        return jedisPubSub;
+            switch (choice) {
+                case 1:
+                    System.out.print("Please input a tag: ");
+                    try {
+                        String tag = in.readLine();
+                        subscriberService.subscribe(tag);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case 2:
+//                    articleService.createArticle();
+                    break;
+                case 3:
+                    System.exit(1);
+            }
+        }
+    }
+
+    public boolean authenticate() {
+        while (true) {
+            int choice = 0;
+            System.out.print("1. Log in\n2. Register\n3. Exit\nPlease choose: ");
+            try {
+                choice = Integer.parseInt(in.readLine());
+                if (choice < 1 || choice > 3) {
+                    throw new IOException("Your choice is out of range");
+                }
+            } catch (Exception e) {
+                System.out.println(">>> Please input 1 to 3");
+            }
+            switch (choice) {
+                case 1:
+                    try {
+                        System.out.println("Please input your username");
+                        String username = in.readLine();
+                        System.out.println("Please input your password");
+                        String password = in.readLine();
+                        User user = userRepository.findUserByUsernameAndPassword(username, password);
+                        if (user == null) return false;
+                        return true;
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                case 2:
+                    try {
+                        System.out.println("Please input your username");
+                        String username = in.readLine();
+                        if (userRepository.userExist(username)) {
+                            System.out.println("Username exist, Please another username");
+                            break;
+                        }
+                        System.out.println("Please input your password");
+                        String password = in.readLine();
+                        userRepository.save(username, password);
+                        return true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case 3:
+                    System.exit(1);
+            }
+        }
     }
 
     public void start() {
+        authenticate();
 
     }
 
 
     public static void main(String[] args) {
-
+        Client client = new Client();
+        client.start();
     }
 }

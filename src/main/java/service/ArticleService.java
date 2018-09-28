@@ -1,6 +1,8 @@
 package service;
 
 import model.Article;
+import publisher.ArticlePublisher;
+import publisher.ArticlePublisherInterface;
 import redis.clients.jedis.Jedis;
 import repository.ArticleRepository;
 import repository.ArticleRepositoryInterface;
@@ -12,11 +14,11 @@ import java.util.List;
 
 public class ArticleService {
     private ArticleRepositoryInterface articleRepository;
-    private Jedis jedis;
+    private ArticlePublisherInterface articlePublisher;
 
     public ArticleService() {
         articleRepository = new ArticleRepository();
-        jedis = new Jedis();
+        articlePublisher = new ArticlePublisher();
     }
 
     public void showAllArticle() {
@@ -42,9 +44,7 @@ public class ArticleService {
             // publish the body of article to all keyword channel
             for (String rawTag : tagList) {
                 String tag = rawTag.trim();
-                String channel = "channel:" + tag;
-                jedis.publish(channel, article.getBody());
-                System.out.println("publish to " + channel);
+                articlePublisher.publishArticle(tag, article);
             }
 
         } catch (IOException e) {
