@@ -11,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-public class ArticleService {
+public class ArticleService implements ArticleServiceInterface {
     private ArticleRepositoryInterface articleRepository;
     private ArticlePublisherInterface articlePublisher;
 

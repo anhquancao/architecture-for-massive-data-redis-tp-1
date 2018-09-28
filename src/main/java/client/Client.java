@@ -4,7 +4,9 @@ package client;
 import context.AppContext;
 import model.User;
 import service.SubscriberService;
+import service.SubscriberServiceInterface;
 import service.UserService;
+import service.UserServiceInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,8 +14,8 @@ import java.io.IOException;
 public class Client {
 
     private BufferedReader in;
-    private SubscriberService subscriberService;
-    private UserService userService;
+    private SubscriberServiceInterface subscriberService;
+    private UserServiceInterface userService;
 
     private Client() {
         in = AppContext.getAppContext().getReaderInstance();

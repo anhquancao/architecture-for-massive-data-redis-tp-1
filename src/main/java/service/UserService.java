@@ -8,7 +8,7 @@ import repository.UserRepositoryInterface;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class UserService {
+public class UserService implements UserServiceInterface {
     private UserRepositoryInterface userRepository;
     private BufferedReader in;
 

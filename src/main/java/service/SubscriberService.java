@@ -7,7 +7,7 @@ import subscriber.SubClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class SubscriberService {
+public class SubscriberService implements SubscriberServiceInterface {
     private BufferedReader in;
 
     private static SubscriberService subscriberService;

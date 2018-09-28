@@ -2,12 +2,13 @@ package server;
 
 import context.AppContext;
 import service.ArticleService;
+import service.ArticleServiceInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Server {
-    private ArticleService articleService;
+    private ArticleServiceInterface articleService;
     private BufferedReader in;
 
 
