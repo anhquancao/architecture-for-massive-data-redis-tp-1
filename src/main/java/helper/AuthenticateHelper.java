@@ -1,5 +1,5 @@
 package helper;
-import config.Config;
+import context.Config;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

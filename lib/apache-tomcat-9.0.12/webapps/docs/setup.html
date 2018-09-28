@@ -146,7 +146,7 @@ cd $CATALINA_HOME
     -Dcatalina.home=$CATALINA_HOME \
     -Dcatalina.base=$CATALINA_BASE \
     -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager \
-    -Djava.util.logging.config.file=$CATALINA_BASE/conf/logging.properties \
+    -Djava.util.logging.context.file=$CATALINA_BASE/conf/logging.properties \
     org.apache.catalina.startup.Bootstrap</code></pre></div>
 
     <p>When running on Java 9 you will need to additionally specify the

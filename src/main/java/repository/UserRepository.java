@@ -1,6 +1,5 @@
 package repository;
 
-import config.Config;
 import helper.AuthenticateHelper;
 import model.User;
 import redis.clients.jedis.Jedis;
@@ -12,7 +11,16 @@ public class UserRepository implements UserRepositoryInterface {
     private Jedis jedis;
     private AuthenticateHelper authenticateHelper;
 
-    public UserRepository() {
+    private static UserRepository userRepository;
+
+    public static UserRepository getInstance() {
+        if (userRepository == null) {
+            userRepository = new UserRepository();
+        }
+        return userRepository;
+    }
+
+    private UserRepository() {
         jedis = new Jedis();
         authenticateHelper = new AuthenticateHelper();
     }

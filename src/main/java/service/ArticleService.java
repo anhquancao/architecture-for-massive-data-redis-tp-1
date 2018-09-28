@@ -1,23 +1,31 @@
 package service;
 
+import context.AppContext;
 import model.Article;
 import publisher.ArticlePublisher;
 import publisher.ArticlePublisherInterface;
-import redis.clients.jedis.Jedis;
 import repository.ArticleRepository;
 import repository.ArticleRepositoryInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 public class ArticleService {
     private ArticleRepositoryInterface articleRepository;
     private ArticlePublisherInterface articlePublisher;
 
-    public ArticleService() {
-        articleRepository = new ArticleRepository();
+    private static ArticleService articleService;
+
+    public static ArticleService getInstance() {
+        if (articleService == null) {
+            articleService = new ArticleService();
+        }
+        return articleService;
+    }
+
+    private ArticleService() {
+        articleRepository = ArticleRepository.getInstance();
         articlePublisher = new ArticlePublisher();
     }
 
@@ -29,7 +37,7 @@ public class ArticleService {
     }
 
     public void createArticle() {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = AppContext.getAppContext().getReaderInstance();
         try {
             System.out.println("Please input article body");
             String body = in.readLine();

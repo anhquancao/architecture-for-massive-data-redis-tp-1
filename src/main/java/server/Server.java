@@ -1,10 +1,10 @@
 package server;
 
+import context.AppContext;
 import service.ArticleService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Server {
     private ArticleService articleService;
@@ -12,8 +12,8 @@ public class Server {
 
 
     private Server() {
-        articleService = new ArticleService();
-        in = new BufferedReader(new InputStreamReader(System.in));
+        articleService = ArticleService.getInstance();
+        in = AppContext.getAppContext().getReaderInstance();
     }
 
     private void start(){

@@ -11,7 +11,16 @@ import java.util.Map;
 public class ArticleRepository implements ArticleRepositoryInterface {
     private Jedis jedis;
 
-    public ArticleRepository() {
+    private static ArticleRepository articleRepository;
+
+    public static ArticleRepository getInstance(){
+        if (articleRepository == null) {
+            articleRepository = new ArticleRepository();
+        }
+        return articleRepository;
+    }
+
+    private ArticleRepository() {
         jedis = new Jedis();
     }
 
